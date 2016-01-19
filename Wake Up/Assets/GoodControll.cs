@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerController: MonoBehaviour
-{
+public class GoodControll : MonoBehaviour {
+
     private GameObject Game;
 
     // Use this for initialization
@@ -19,17 +19,39 @@ public class PlayerController: MonoBehaviour
 
     private Vector3 moveDirection = Vector3.zero;
 
+    void Detect()
+    {
+
+    }
+
+    float CountX()
+    {
+        return 0;
+    }
+
+    float CountRotX()
+    {
+        return 0;
+    }
+
+    float CountZ()
+    {
+        return 0;
+    }
+
     void Play()
     {
-        transform.Rotate(0, Input.GetAxis("Mouse X") * rotSpeed * Time.deltaTime, 0);
+        Detect();
+
+        transform.Rotate(0, CountRotX() * rotSpeed * Time.deltaTime, 0);
 
         CharacterController controller = GetComponent<CharacterController>();
         if (controller.isGrounded)
         {
             // We are grounded, so recalculate
             // move direction directly from axes
-            moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0,
-                                    Input.GetAxis("Vertical"));
+            moveDirection = new Vector3(CountX(), 0,
+                                    CountZ());
             moveDirection = transform.TransformDirection(moveDirection);
             moveDirection *= speed;
 
@@ -52,4 +74,3 @@ public class PlayerController: MonoBehaviour
             Play();
     }
 }
-
