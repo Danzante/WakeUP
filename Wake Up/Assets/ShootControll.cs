@@ -11,7 +11,8 @@ public class ShootControll : MonoBehaviour
     private GameObject Body;
     private GameObject Game;
     bool[] has = new bool[3];
-    int[] nowB, totalB = new int[3];
+    int[] nowB = new int[3];
+    int[] totalB = new int[3];
     const float epsilon = 0.01f;
 
     // Use this for initialization
