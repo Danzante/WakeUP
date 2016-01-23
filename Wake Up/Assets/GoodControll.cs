@@ -3,27 +3,29 @@ using System.Collections;
 using System;
 
 public class GoodControll : MonoBehaviour {
-
-    private GameObject Game;
-    public int nowG = 1;
+    
+    public int nowG = 17;
     const float epsilon = 0.1f;
     public bool p = true;
 
     public float aimX, aimZ, aimRot;
     public int ax;
 
-    // Use this for initialization
     void Start()
     {
-        Game = GameObject.Find("/Game");
-        GameObject.Find("/Player").GetComponent<HPcounter>().typeOb = 1;
+        ax = 1;
+    }
+
+    // Use this for initialization
+    void Start2()
+    {
         aimX = transform.position.x;
         aimZ = transform.position.z;
         aimRot = transform.rotation.y;
-        ax = Game.GetComponent<gameController>().gLen;
-        for (int i = 0; i < Game.GetComponent<gameController>().gLen; i++)
+        ax = 0;
+        for (int i = 0; i < gameController.gLen; i++)
         {
-            if (Mathf.Abs(aimX - Game.GetComponent<gameController>().gCordx[i]) < epsilon && Mathf.Abs(aimZ - Game.GetComponent<gameController>().gCordz[i]) < epsilon)
+            if ((Mathf.Abs(aimX - gameController.gCordx[i]) < epsilon) && (Mathf.Abs(aimZ - gameController.gCordz[i]) < epsilon))
             {
                 nowG = i;
                 break;
@@ -39,7 +41,7 @@ public class GoodControll : MonoBehaviour {
 
     System.Random r = new System.Random();
 
-    float speed = 6.0f;
+    float speed = 1.0f;
     float gravity = 20.0f;
     float rotSpeed = 900;
 
@@ -107,7 +109,7 @@ public class GoodControll : MonoBehaviour {
                 }
             }
         }
-        int l = Game.GetComponent<gameController>().gELen[nowG];
+        int l = gameController.gELen[nowG];
         int m;
         bool b;
         bool[] visit = new bool[l];
@@ -128,7 +130,7 @@ public class GoodControll : MonoBehaviour {
                 b = true;
                 for (int j = 0; j < memory; j++)
                 {
-                    if (a[j] == Game.GetComponent<gameController>().gEdge[nowG][i])
+                    if (a[j] == gameController.gEdge[nowG][i])
                     {
                         visit[i] = false;
                         b = false;
@@ -159,54 +161,41 @@ public class GoodControll : MonoBehaviour {
         int k = r.Next(m);
         for (int i = 0; i < l; i++)
         { 
-            for (int j = 0; j < memory; j++)
+            if (visit[i] || b)
             {
-                if(k == 0)
+                if (k == 0)
                 {
-                    nowG = Game.GetComponent<gameController>().gEdge[nowG][i];
-                    aimX = Game.GetComponent<gameController>().gCordx[nowG];
-                    aimZ = Game.GetComponent<gameController>().gCordz[nowG];
+                    nowG = gameController.gEdge[nowG][i];
+                    aimX = gameController.gCordx[nowG];
+                    aimZ = gameController.gCordz[nowG];
                     return;
-                }
-                if (visit[i] || b)
-                {
-                    k--;
-                    break;
-                }
+                }                
+                k--;
             }
         }
     }
 
     float CountX()
     {
-        if(Mathf.Abs(aimX - transform.position.x) < epsilon && Mathf.Abs(aimZ - transform.position.z) < epsilon)
-        {
-            Detect();
-        }
         return aimX - transform.position.x;
     }
 
     float CountRotX()
     {
-        if (Mathf.Abs(aimX - transform.position.x) < epsilon && Mathf.Abs(aimZ - transform.position.z) < epsilon)
-        {
-            Detect();
-        }
         return aimRot - transform.rotation.y;
     }
 
     float CountZ()
     {
-        if (Mathf.Abs(aimX - transform.position.x) < epsilon && Mathf.Abs(aimZ - transform.position.z) < epsilon)
-        {
-            Detect();
-        }
         return aimZ - transform.position.z;
     }
 
     void Play()
     {
-        Detect();
+        if (Mathf.Abs(aimX - transform.position.x) < epsilon && Mathf.Abs(aimZ - transform.position.z) < epsilon)
+        {
+            Detect();
+        }
 
         transform.Rotate(0, CountRotX() * rotSpeed * Time.deltaTime, 0);
 
@@ -230,7 +219,13 @@ public class GoodControll : MonoBehaviour {
 
     void Update()
     {
-        if (!Game.GetComponent<gameController>().paused || p)
+        if (ax == 1)
+        {
+            gameController.Start2();
+            Start2();
+        }
+        gameController.Update2();
+        if (!gameController.paused && p)
             Play();
     }
 }

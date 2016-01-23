@@ -3,12 +3,9 @@ using System.Collections;
 
 public class PlayerController: MonoBehaviour
 {
-    private GameObject Game;
-
     // Use this for initialization
     void Start()
     {
-        Game = GameObject.Find("/Game");
         GameObject.Find("/Player").GetComponent<HPcounter>().typeOb = 1;
     }
 
@@ -48,7 +45,7 @@ public class PlayerController: MonoBehaviour
 
     void Update()
     {
-        if (!Game.GetComponent<gameController>().paused)
+        if (!gameController.paused)
             Play();
     }
 }

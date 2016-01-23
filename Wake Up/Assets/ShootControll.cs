@@ -9,7 +9,6 @@ public class ShootControll : MonoBehaviour
     public float scroll;
     private GameObject Head;
     private GameObject Body;
-    private GameObject Game;
     bool[] has = new bool[3];
     int[] nowB = new int[3];
     int[] totalB = new int[3];
@@ -20,7 +19,6 @@ public class ShootControll : MonoBehaviour
     {
         Body = transform.parent.gameObject;
         Head = GameObject.Find("/Player/Head");
-        Game = GameObject.Find("/Game");
         has[0] = true;
         nowB[0] = 6;
         totalB[0] = 0;
@@ -148,7 +146,7 @@ public class ShootControll : MonoBehaviour
 
     void Update()
     {
-        if (!Game.GetComponent<gameController>().paused)
+        if (!gameController.paused)
             Play();
     }
 }
