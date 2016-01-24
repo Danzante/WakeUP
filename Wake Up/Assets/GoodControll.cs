@@ -41,7 +41,7 @@ public class GoodControll : MonoBehaviour {
 
     System.Random r = new System.Random();
 
-    float speed = 1.0f;
+    float speed = 3.0f;
     float gravity = 20.0f;
     float rotSpeed = 900;
 
@@ -207,6 +207,7 @@ public class GoodControll : MonoBehaviour {
             moveDirection = new Vector3(CountX(), 0,
                                     CountZ());
             moveDirection = transform.TransformDirection(moveDirection);
+            moveDirection.Normalize();
             moveDirection *= speed;
         }
 
