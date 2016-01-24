@@ -5,12 +5,11 @@ using System;
 public class GoodControll : MonoBehaviour {
     
     public int nowG = 17;
-    const float epsilon = 0.001f;
-    const float repsilon = 0.00001f;
+    const float epsilon = 0.1f;
     public bool p = true;
 
-    public float aimX, aimZ;
-    public int ax, aimRot;
+    public float aimX, aimZ, aimRot;
+    public int ax;
 
     void Start()
     {
@@ -22,7 +21,7 @@ public class GoodControll : MonoBehaviour {
     {
         aimX = transform.position.x;
         aimZ = transform.position.z;
-        aimRot = 0;
+        aimRot = transform.rotation.y;
         ax = 0;
         for (int i = 0; i < gameController.gLen; i++)
         {
@@ -32,7 +31,6 @@ public class GoodControll : MonoBehaviour {
                 break;
             }
         }
-        ak = 0;
     }
 
     private void escape()
@@ -43,9 +41,9 @@ public class GoodControll : MonoBehaviour {
 
     System.Random r = new System.Random();
 
-    float speed = 3.0f;
+    float speed = 1.0f;
     float gravity = 20.0f;
-    float rotSpeed = 1;
+    float rotSpeed = 900;
 
     private Vector3 moveDirection = Vector3.zero;
 
@@ -90,8 +88,7 @@ public class GoodControll : MonoBehaviour {
     }
 
     St stack = new St();
-
-    public int ak;
+    
 
     void Detect()
     {
@@ -99,21 +96,11 @@ public class GoodControll : MonoBehaviour {
         {
             escape();
         }
-        if(ak < 2)
-        {
-            aimRot += 180;
-            ak++;
-            return;
-        }
-        else
-        {
-            ak = 0;
-        }
         memory += 1;
         stack.Push(nowG, memory);
-        if (memory > 2)
+        if (memory > 4)
         {
-            for (int i = 2; i < memory; i++)
+            for (int i = 4; i < memory; i++)
             {
                 if (r.Next(0, 7) < 2)
                 {
@@ -193,44 +180,34 @@ public class GoodControll : MonoBehaviour {
         return aimX - transform.position.x;
     }
 
+    float CountRotX()
+    {
+        return aimRot - transform.rotation.y;
+    }
+
     float CountZ()
     {
         return aimZ - transform.position.z;
     }
 
-    float Slower()
-    {
-        if (aimRot == 0)
-        {
-            return 0;
-        }
-        aimRot--;
-        return 1;
-    }
-
     void Play()
     {
-        if (Mathf.Abs(aimX - transform.position.x) < epsilon && Mathf.Abs(aimZ - transform.position.z) < epsilon && aimRot == 0 || ak != 0)
+        if (Mathf.Abs(aimX - transform.position.x) < epsilon && Mathf.Abs(aimZ - transform.position.z) < epsilon)
         {
             Detect();
         }
-        
-        transform.Rotate(0, Slower() * rotSpeed, 0);
+
+        transform.Rotate(0, CountRotX() * rotSpeed * Time.deltaTime, 0);
 
         CharacterController controller = GetComponent<CharacterController>();
-        if (controller.isGrounded && aimRot == 0)
+        if (controller.isGrounded)
         {
             // We are grounded, so recalculate
             // move direction directly from axes
             moveDirection = new Vector3(CountX(), 0,
                                     CountZ());
-            moveDirection.Normalize();
             moveDirection = transform.TransformDirection(moveDirection);
             moveDirection *= speed;
-        }
-        else
-        {
-            moveDirection = Vector3.zero;
         }
 
         // Apply gravity
