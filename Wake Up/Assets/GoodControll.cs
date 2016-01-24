@@ -8,7 +8,8 @@ public class GoodControll : MonoBehaviour {
     const float epsilon = 0.1f;
     public bool p = true;
 
-    public float aimX, aimZ, aimRot;
+    public float aimX, aimZ;
+    public int CurRot, aimRot;
     public int ax;
 
     void Start()
@@ -21,7 +22,8 @@ public class GoodControll : MonoBehaviour {
     {
         aimX = transform.position.x;
         aimZ = transform.position.z;
-        aimRot = transform.rotation.y;
+        aimRot = 0;
+        CurRot = 0;
         ax = 0;
         for (int i = 0; i < gameController.gLen; i++)
         {
@@ -168,6 +170,22 @@ public class GoodControll : MonoBehaviour {
                     nowG = gameController.gEdge[nowG][i];
                     aimX = gameController.gCordx[nowG];
                     aimZ = gameController.gCordz[nowG];
+                    if(aimX - transform.position.x > epsilon)
+                    {
+                        aimRot = 90;
+                    }
+                    else if(aimX - transform.position.x < -epsilon)
+                    {
+                        aimRot = -90;
+                    }
+                    else if(aimZ - transform.position.z > epsilon)
+                    {
+                        aimRot = 0;
+                    }
+                    else
+                    {
+                        aimRot = 180;
+                    }
                     return;
                 }                
                 k--;
@@ -177,17 +195,27 @@ public class GoodControll : MonoBehaviour {
 
     float CountX()
     {
-        return aimX - transform.position.x;
+        return 0;// aimX - transform.position.x;
     }
 
     float CountRotX()
     {
-        return aimRot - transform.rotation.y;
+        float res;
+        if (CurRot == aimRot)
+            res = 0;
+        else if (CurRot - aimRot == 90 || (CurRot == -90 && aimRot == 180))
+            res = -90;
+        else if (aimRot - CurRot == 90 || (CurRot == 180 && aimRot == -90))
+            res = 90;
+        else
+            res = 180;
+        CurRot = aimRot;
+        return res;
     }
 
     float CountZ()
     {
-        return aimZ - transform.position.z;
+        return 1;// aimZ - transform.position.z;
     }
 
     void Play()
@@ -197,7 +225,7 @@ public class GoodControll : MonoBehaviour {
             Detect();
         }
 
-        transform.Rotate(0, CountRotX() * rotSpeed * Time.deltaTime, 0);
+        transform.Rotate(0, CountRotX(), 0);
 
         CharacterController controller = GetComponent<CharacterController>();
         if (controller.isGrounded)
