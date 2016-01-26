@@ -193,9 +193,42 @@ public class GoodControll : MonoBehaviour {
         }
     }
 
+
+    float CountXNorth()
+    {
+        if (Mathf.Abs(aimZ - transform.position.z) < epsilon)
+        {
+            if (aimX < transform.position.x && aimRot == 0)
+                return -1;
+            else if (aimX > transform.position.x && aimRot == 0)
+                return 1;
+            else if (aimX < transform.position.x)
+                return 1;
+            return -1;
+        }
+        return 0;
+    }
+
+    float CountXWest()
+    {
+        if (Mathf.Abs(aimX - transform.position.x) < epsilon)
+        {
+            if (aimZ < transform.position.z && aimRot == 90)
+                return 1;
+            else if (aimZ > transform.position.z && aimRot == 90)
+                return -1;
+            else if (aimZ < transform.position.z)
+                return -1;
+            return 1;
+        }
+        return 0;
+    }
+
     float CountX()
     {
-        return 0;// aimX - transform.position.x;
+        if(Mathf.Abs(aimRot) == 90)
+            return CountXWest();
+        return CountXNorth();
     }
 
     float CountRotX()
@@ -213,9 +246,25 @@ public class GoodControll : MonoBehaviour {
         return res;
     }
 
+    float CountZNorth()
+    {
+        if (Mathf.Abs(aimZ - transform.position.z) < epsilon)
+            return 0;
+        return 1;
+    }
+
+    float CountZWest()
+    {
+        if (Mathf.Abs(aimX - transform.position.x) < epsilon)
+            return 0;
+        return 1;
+    }
+
     float CountZ()
     {
-        return 1;// aimZ - transform.position.z;
+        if (Mathf.Abs(aimRot) == 90)
+            return CountZWest();
+        return CountZNorth();
     }
 
     void Play()
