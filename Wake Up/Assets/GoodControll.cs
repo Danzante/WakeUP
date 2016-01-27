@@ -299,10 +299,8 @@ public class GoodControll : MonoBehaviour {
     {
         if (ax == 1)
         {
-            gameController.Start2();
             Start2();
         }
-        gameController.Update2();
         if (!gameController.paused && p)
             Play();
     }

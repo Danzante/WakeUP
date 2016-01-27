@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 
 public class gameController : MonoBehaviour {
@@ -8,10 +9,14 @@ public class gameController : MonoBehaviour {
     public static int gLen { get; private set; }
     public static int[] gELen;
     public static int[][] gEdge;
+    static GameObject PM;
+    static bool active;
 
     void Start()
     {
-
+        PM = GameObject.Find("/PauseMenu");
+        PM.SetActive(false);
+        active = false;
     }
 
     // Use this for initialization
@@ -155,11 +160,18 @@ public class gameController : MonoBehaviour {
     { }
 
 
+    static void Pause()
+    {
+        active = !active;
+        PM.SetActive(active);
+        paused = !paused;
+    }
+
     // Update is called once per frame
     public static void Update2 () {
         if (Input.GetKeyUp(KeyCode.Escape))
         {
-            paused = !paused;
+            Pause();
         }
     }
 }

@@ -18,6 +18,7 @@ public class PlayerController: MonoBehaviour
 
     void Play()
     {
+        gameController.Start2();
         transform.Rotate(0, Input.GetAxis("Mouse X") * rotSpeed * Time.deltaTime, 0);
 
         CharacterController controller = GetComponent<CharacterController>();
@@ -45,6 +46,7 @@ public class PlayerController: MonoBehaviour
 
     void Update()
     {
+        gameController.Update2();
         if (!gameController.paused)
             Play();
     }
