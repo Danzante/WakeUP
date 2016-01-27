@@ -2,7 +2,8 @@
 using UnityEngine.Events;
 using System.Collections;
 
-public class gameController : MonoBehaviour {
+public class gameController : MonoBehaviour
+{
 
     public static float[] gCordx, gCordz;
     public static bool paused { get; private set; }
@@ -11,6 +12,7 @@ public class gameController : MonoBehaviour {
     public static int[][] gEdge;
     static GameObject PM;
     static bool active;
+    public static bool inited = false;
 
     void Start()
     {
@@ -20,7 +22,9 @@ public class gameController : MonoBehaviour {
     }
 
     // Use this for initialization
-    public static void Start2 () {
+    public static void Start2()
+    {
+        inited = true;
         gLen = 21;
         gCordx = new float[gLen];
         gCordz = new float[gLen];
@@ -160,7 +164,7 @@ public class gameController : MonoBehaviour {
     { }
 
 
-    static void Pause()
+    public static void Pause()
     {
         active = !active;
         PM.SetActive(active);
@@ -168,7 +172,8 @@ public class gameController : MonoBehaviour {
     }
 
     // Update is called once per frame
-    public static void Update2 () {
+    public static void Update2()
+    {
         if (Input.GetKeyUp(KeyCode.Escape))
         {
             Pause();

@@ -45,7 +45,6 @@ public class GoodControll : MonoBehaviour {
 
     float speed = 3.0f;
     float gravity = 20.0f;
-    float rotSpeed = 900;
 
     private Vector3 moveDirection = Vector3.zero;
 
@@ -297,11 +296,11 @@ public class GoodControll : MonoBehaviour {
 
     void Update()
     {
-        if (ax == 1)
+        if (ax == 1 && gameController.inited)
         {
             Start2();
         }
-        if (!gameController.paused && p)
+        if (!gameController.paused && p && gameController.inited)
             Play();
     }
 }

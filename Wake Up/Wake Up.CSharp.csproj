@@ -65,6 +65,7 @@
     <Compile Include="Assets\BadControll.cs" />
     <Compile Include="Assets\GoodControll.cs" />
     <Compile Include="Assets\HPcounter.cs" />
+    <Compile Include="Assets\PBcontroller.cs" />
     <Compile Include="Assets\PlayerController.cs" />
     <Compile Include="Assets\ShootControll.cs" />
     <Compile Include="Assets\TestCameraControll.cs" />
