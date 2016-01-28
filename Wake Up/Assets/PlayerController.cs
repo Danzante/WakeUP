@@ -6,7 +6,7 @@ public class PlayerController: MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        GameObject.Find("/Player").GetComponent<HPcounter>().typeOb = 1;
+        GameObject.Find("/Player/Body").GetComponent<HPcounter>().typeOb = 1;
     }
 
     float speed = 6.0f;
